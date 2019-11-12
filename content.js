@@ -2,11 +2,6 @@
     TODO: better handling for multiple dom changes
 */
 
-//console.log("worktime-realization", document.getElementsByClassName("worktime-realization"));
-console.log("asd");
-
-window.onload = () => {};
-
 document.body.addEventListener("DOMSubtreeModified", function() {
   var workTimeItems = document.getElementsByClassName("worktime-realization");
   if (workTimeItems.length) {
@@ -20,10 +15,12 @@ document.body.addEventListener("DOMSubtreeModified", function() {
     };
     //console.log(workHours);
     timeDifferences = calcTimeDifferences(workHours);
-    console.log(timeDifferences);
+    //console.log(timeDifferences);
 
     overTime = calcOverTime(timeDifferences);
-    console.log(overTime);
+    //console.log(overTime);
+
+    chrome.storage.local.set({"overtime": overTime});
   }
 });
 
