@@ -10,57 +10,44 @@ document.body.addEventListener("DOMSubtreeModified", function() {
     //workHours = workTimeItems.map(x => x.innerText);
     var workHours = [];
     for (var i = 0; i < workTimeItems.length; i++) {
-      var hours = splitHours(workTimeItems[i].innerText);
+      var hours = doneHours(workTimeItems[i].innerText);
       if (hours) {
         workHours.push(hours);
       }
     }
     //console.log(workHours);
-    timeDifferences = calcTimeDifferences(workHours);
-    console.log(timeDifferences);
+    timeSpent = calcTimeSpent(workHours);
+    //console.log(timeSpent);
 
-    overTime = calcOverTime(timeDifferences);
+    overTime = calcOverTime(timeSpent);
     //console.log(overTime);
 
     updateStorageData(overTime);
   }
 });
 
-function splitHours(innerText) {
-  if (innerText.indexOf("-") > 0) {
-    var split = innerText.split("-");
-    for (var i = 0; i < split.length; i++) {
-      split[i] = split[i].trim();
-    }
-    //console.log(split);
-    return split;
+function doneHours(innerText) {
+  if (innerText.indexOf("-") === -1) {
+    return innerText;
   }
   return;
 }
 
-function calcTimeDifferences(workHoursArray) {
-  // to be change to use work time
-  var timeDifferences = [];
+function calcTimeSpent(workHoursArray) {
+  var timeSpentArray = [];
   for (var i = 0; i < workHoursArray.length; i++) {
-    splitStart = workHoursArray[i][0].split(":");
-    splitEnd = workHoursArray[i][1].split(":");
-
-    var dateStart = new Date("2011/02/01");
-    dateStart.setHours(splitStart[0]);
-    dateStart.setMinutes(splitStart[1]);
-
-    var dateEnd = new Date("2011/02/01");
-    dateEnd.setHours(splitEnd[0]);
-    dateEnd.setMinutes(splitEnd[1]);
-    timeDifferences.push(Math.abs(dateEnd - dateStart) / 60000); //in minutes
+    split = workHoursArray[i].split(":");
+    timeSpentArray.push(split[0] * 60 + split[1] * 1); //in minutes
   }
-  return timeDifferences;
+  return timeSpentArray;
 }
 
-function calcOverTime(timeDifferences) {
+function calcOverTime(timeSpent) {
   var overtime = 0;
-  for (var i = 0; i < timeDifferences.length; i++) {
-    overtime += timeDifferences[i] - 480; // to verify: what happens, when someone have 2 in&outs ; check by time 
+  for (var i = 0; i < timeSpent.length; i++) {
+    if(timeSpent[i]){
+      overtime += timeSpent[i] - 480; 
+    }
   }
   return overtime;
 }
