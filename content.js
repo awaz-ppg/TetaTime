@@ -2,11 +2,12 @@
     TODO: better handling for multiple dom changes
 */
 
-chrome.storage.local.clear();
+//chrome.storage.local.clear();
 
 document.body.addEventListener("DOMSubtreeModified", function() {
   var workTimeItems = document.getElementsByClassName("worktime-realization");
-  if (workTimeItems.length) {
+  var loader = document.getElementsByClassName("cs-loader");
+  if (workTimeItems.length && loader.length == 0) {
     //workHours = workTimeItems.map(x => x.innerText);
     var workHours = [];
     for (var i = 0; i < workTimeItems.length; i++) {

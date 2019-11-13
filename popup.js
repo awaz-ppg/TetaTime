@@ -34,7 +34,7 @@ chrome.storage.local.get("overtime", function(data) {
   for (var i = 0; i < sum.length; i++) {
     if (sum[i]) {
       result += "<li>Period ";
-      result += i;
+      result += (i+1);
       if (i == Math.floor(currentMonth / 4)) {
         result += "(current)";
       }
